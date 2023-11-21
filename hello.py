@@ -16,11 +16,14 @@ if st.sidebar.button("Submit"):
     print(f'Processing {github_link}')
     file_contents,file_names,dir = github_process.control(github_link)
 
+    st.write("Processing Github Repo: "+str(github_link))
+
     doc,vdd = st.tabs(["Documentation","Visual Dependency Diagram"])
-    
+
     with doc:
         # print("\n\nInside Documentation Tab")
-        output = gpt4_process.control(file_contents,file_names,dir)
+        with st.spinner(text="In progress..."):
+            output = gpt4_process.control(file_contents,file_names,dir)
         st.markdown(output)
     with vdd:
         # print("\n\nInside VDD Tab")
@@ -28,7 +31,7 @@ if st.sidebar.button("Submit"):
     
     pass
 
-example_links = ["https://github.com/anushkasingh98/personal-portfolio"]
+example_links = ["https://github.com/anushkasingh98/personal-portfolio","https://github.com/anushkasingh98/demo-repo"]
 df = pd.DataFrame(example_links,columns=["Example Github Links"])
 
 st.sidebar.table(df)
