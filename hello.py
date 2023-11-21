@@ -4,7 +4,7 @@ import gpt4_process
 import pandas as pd
 
 st.set_page_config(
-    page_title="Kathalyst",
+    page_title="Kathalyst Web App",
     page_icon="images/codeAID_green.png",
 )
 
