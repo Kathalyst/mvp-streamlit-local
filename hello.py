@@ -31,7 +31,8 @@ if st.sidebar.button("Submit"):
     
     pass
 
-example_links = ["https://github.com/anushkasingh98/personal-portfolio","https://github.com/anushkasingh98/demo-repo"]
+example_links = ["https://github.com/anushkasingh98/personal-portfolio","https://github.com/anushkasingh98/demo-repo",
+                 "https://github.com/anushkasingh98/CapitalisationProject"]
 df = pd.DataFrame(example_links,columns=["Example Github Links"])
 
 st.sidebar.table(df)
