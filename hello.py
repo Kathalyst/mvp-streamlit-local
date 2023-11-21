@@ -1,5 +1,6 @@
 import streamlit
 import github_process
+import pandas as pd
 
 streamlit.header("Kathalyst - Automated Software Documentation")
 
@@ -12,3 +13,8 @@ if streamlit.sidebar.button("Submit"):
     streamlit.write(file_names)
     streamlit.write(file_contents)
     pass
+
+example_links = ["https://github.com/anushkasingh98/personal-portfolio"]
+df = pd.DataFrame(example_links,columns=["Example Github Links"])
+
+streamlit.sidebar.table(df)
