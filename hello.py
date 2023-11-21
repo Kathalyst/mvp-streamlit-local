@@ -1,5 +1,6 @@
 import streamlit
 import github_process
+import gpt4_process
 import pandas as pd
 
 streamlit.header("Kathalyst - Automated Software Documentation")
@@ -14,10 +15,11 @@ if streamlit.sidebar.button("Submit"):
     
     with doc:
         # print("\n\nInside Documentation Tab")
-        streamlit.write(file_names)
+        output = gpt4_process.control(file_contents,file_names)
+        streamlit.markdown(output)
     with vdd:
         # print("\n\nInside VDD Tab")
-        streamlit.write(file_contents)
+        streamlit.write("Visual Dependency Diagram coming soon ...")
     
     pass
 
