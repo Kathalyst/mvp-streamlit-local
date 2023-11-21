@@ -1,9 +1,5 @@
 import os
-import requests
-import openai
 import subprocess
-import time
-import tiktoken
 
 ignore_file_types = [".png",".img",".csv",".ipynb",".MD",".md",".JPG",".jpg",".pyc",".sqlite3",".sample",".pack",".idx"]
 
@@ -67,4 +63,4 @@ def control(github_repo):
     file_contents, file_names = read_files_in_directory(dir,file_contents,file_names)
     file_contents, file_names = remove_empty_files(file_names,file_contents)
 
-    return file_contents,file_names
+    return file_contents,file_names,dir

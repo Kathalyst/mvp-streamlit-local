@@ -57,7 +57,7 @@ def parse_response(response):
     # print(text)
     return text
 
-def control(file_contents,file_names):
+def control(file_contents,file_names,dir):
     base_prompt = create_base_prompt(file_contents,file_names)
     flag = check_prompt_tokens(base_prompt)
 
