@@ -10,8 +10,15 @@ if streamlit.sidebar.button("Submit"):
     print(f'Processing {github_link}')
     file_contents,file_names = github_process.control(github_link)
 
-    streamlit.write(file_names)
-    streamlit.write(file_contents)
+    doc,vdd = streamlit.tabs(["Documentation","Visual Dependency Diagram"])
+    
+    with doc:
+        # print("\n\nInside Documentation Tab")
+        streamlit.write(file_names)
+    with vdd:
+        # print("\n\nInside VDD Tab")
+        streamlit.write(file_contents)
+    
     pass
 
 example_links = ["https://github.com/anushkasingh98/personal-portfolio"]
