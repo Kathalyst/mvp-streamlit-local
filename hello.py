@@ -14,6 +14,7 @@ github_link = st.sidebar.text_input("Github Link")
 if st.sidebar.button("Submit"):
     #process if submit button is pressed
     print(f'Processing {github_link}')
+    
     file_contents,file_names,dir = github_process.control(github_link)
 
     st.write("Processing Github Repo: "+str(github_link))
