@@ -1,7 +1,8 @@
 import openai
 import tiktoken
+import vault
 
-openai.api_key = "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"
+openai.api_key = vault.get_Secret("openai_key")
 multiprompt_flag = 0 # 0 for "No multi prompt" & 1 for "Yes multi prompt"
 model = "gpt-4"
 token_threshold = 7000
