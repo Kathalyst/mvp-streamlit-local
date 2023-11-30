@@ -27,24 +27,40 @@ import replicate
 token = vault.get_Secret("replicate_key")
 os.environ["REPLICATE_API_TOKEN"] = token
 
-output = replicate.run(
-  "meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
-  input={
-    "debug": False,
-    "top_k": 50,
-    "top_p": 1,
-    "prompt": "Can you write a poem about open source machine learning? Let's make it in the style of E. E. Cummings.",
-    "temperature": 0.5,
-    "system_prompt": "You are a helpful, respectful and honest assistant. Always answer as helpfully as possible, while being safe. Your answers should not include any harmful, unethical, racist, sexist, toxic, dangerous, or illegal content. Please ensure that your responses are socially unbiased and positive in nature.\n\nIf a question does not make any sense, or is not factually coherent, explain why instead of answering something not correct. If you don't know the answer to a question, please don't share false information.",
-    "max_new_tokens": 500,
-    "min_new_tokens": -1
-  }
-)
-print(output)
+def create_base_prompt(file_contents,file_names):
+    prompt = ""
+    length = len(file_contents)
+    # prompt = "I have a Python project with the following files: \n"
+    for i in range(length):
+        prompt = prompt + "\n" + file_names[i] + ": " + file_contents[i]
+    # prompt = prompt + "\n Can you create a README file for this project?"
+    return prompt
 
-print(*output, sep='')
+def control(file_contents,file_names):
+    prompt = create_base_prompt(file_contents,file_names)
+
+    output = replicate.run(
+        "meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
+        input={
+            "debug": False,
+            "top_k": 50,
+            "top_p": 1,
+            "prompt": prompt,
+            "temperature": 0.5,
+            "system_prompt":"You will be provided with multiple file contents from one project, and your task is to create a README file for the project. Only respond with the README file contents.",
+            "max_new_tokens": 500,
+            "min_new_tokens": -1
+        }
+    )
+    res = ''.join([char for char in output])
+
+    return(res)
+
 # full_response = ''
 # for item in output:
 #     print("Inside for")
 #     full_response += item
 # print(full_response)
+if __name__=="__main__":
+    out = control(['#testing file content\n def sum():\n\treturn (1+2)'],['test.py'])
+    print("Returned output: ",out)
