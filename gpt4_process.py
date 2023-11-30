@@ -1,6 +1,7 @@
 import openai
 import tiktoken
 import vault
+import file_data
 
 openai.api_key = vault.get_Secret("openai_key")
 multiprompt_flag = 0 # 0 for "No multi prompt" & 1 for "Yes multi prompt"
