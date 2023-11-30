@@ -1,6 +1,7 @@
 import streamlit as st
 import github_process
 import gpt4_process
+import llama2_process
 import pandas as pd
 
 st.set_page_config(
@@ -11,6 +12,9 @@ st.set_page_config(
 st.header("Kathalyst - Automated Software Documentation")
 
 github_link = st.sidebar.text_input("Github Link")
+
+model = st.sidebar.radio("Which LLM Model would you like to use?",["GPT-4","Llama 2 70b"],index=0)
+
 if st.sidebar.button("Submit"):
     #process if submit button is pressed
     print(f'Processing {github_link}')
@@ -24,7 +28,10 @@ if st.sidebar.button("Submit"):
     with doc:
         # print("\n\nInside Documentation Tab")
         with st.spinner(text="In progress..."):
-            output = gpt4_process.control(file_contents,file_names,dir)
+            if model == "GPT-4":
+                output = gpt4_process.control(file_contents,file_names,dir)
+            elif model == "Llama 2 70b":
+                output = llama2_process.control(file_contents,file_names)
         st.markdown(output)
     with vdd:
         # print("\n\nInside VDD Tab")
