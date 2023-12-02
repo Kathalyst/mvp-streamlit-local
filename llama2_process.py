@@ -37,6 +37,7 @@ def create_base_prompt(file_contents,file_names):
     return prompt
 
 def control(file_contents,file_names):
+    print("Inside CONTROL")
     prompt = create_base_prompt(file_contents,file_names)
 
     output = replicate.run(
@@ -52,9 +53,10 @@ def control(file_contents,file_names):
             "min_new_tokens": -1
         }
     )
-    
+
     # https://stackoverflow.com/questions/56331795/printing-generator-objects-in-python
     res = ''.join([char for char in output])
+    print("\nResponse: ",res)
 
     return(res)
 
