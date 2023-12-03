@@ -77,7 +77,7 @@ def control(file_contents,file_names):
         }
     )
 
-    print(output)
+    # print(output)
 
     # https://stackoverflow.com/questions/56331795/printing-generator-objects-in-python
     res = ''.join([char for char in output])
