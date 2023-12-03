@@ -9,6 +9,8 @@ st.set_page_config(
     page_icon="images/codeAID_green.png",
 )
 
+placeholder = st.empty()
+
 st.header("Kathalyst - Automated Software Documentation")
 
 github_link = st.sidebar.text_input("Github Link")
@@ -44,3 +46,11 @@ example_links = ["https://github.com/anushkasingh98/personal-portfolio","https:/
 df = pd.DataFrame(example_links,columns=["Example Github Links"])
 
 st.sidebar.table(df)
+
+st.sidebar.markdown("Made with ❤️ by Kathalyst")
+
+# clear = st.sidebar.radio("Clear page?",["Yes","No"],index=1)
+# if clear == "Yes":
+#     placeholder.empty()
+# elif clear == "No":
+#     pass
