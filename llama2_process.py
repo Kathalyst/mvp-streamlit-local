@@ -36,6 +36,29 @@ def create_base_prompt(file_contents,file_names):
     # prompt = prompt + "\n Can you create a README file for this project?"
     return prompt
 
+def custom_prompt(system_prompt,prompt):
+    output = replicate.run(
+        "meta/llama-2-70b-chat:02e509c789964a7ea8736978a43525956ef40397be9033abf9fd2badfe68c9e3",
+        input={
+            "debug": False,
+            "top_k": 50,
+            "top_p": 1,
+            "prompt": prompt,
+            "temperature": 0.5,
+            "system_prompt":system_prompt,
+            "max_new_tokens": 500,
+            "min_new_tokens": -1
+        }
+    )
+
+    print(output)
+
+    # https://stackoverflow.com/questions/56331795/printing-generator-objects-in-python
+    res = ''.join([char for char in output])
+    print("\nResponse: \n",res)
+
+    return(res)
+
 def control(file_contents,file_names):
     print("Inside CONTROL")
     prompt = create_base_prompt(file_contents,file_names)
@@ -58,7 +81,7 @@ def control(file_contents,file_names):
 
     # https://stackoverflow.com/questions/56331795/printing-generator-objects-in-python
     res = ''.join([char for char in output])
-    print("\nResponse: ",res)
+    print("\nResponse: \n",res)
 
     return(res)
 
