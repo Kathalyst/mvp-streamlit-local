@@ -9,7 +9,7 @@ st.set_page_config(
     page_icon="images/codeAID_green.png",
 )
 
-placeholder = st.empty()
+# placeholder = st.empty()
 
 st.header("Kathalyst - Automated Software Documentation")
 
