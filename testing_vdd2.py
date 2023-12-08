@@ -54,7 +54,7 @@ class Experiment2:
 
 diagram = erd.create(Experiment)
 
-diagam.draw("diagram4.png")
+diagram.draw("diagram4.png")
 
 from dataclasses import dataclass
 from datetime import datetime
