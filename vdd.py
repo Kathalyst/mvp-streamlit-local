@@ -4,6 +4,7 @@ import regex
 import replicate
 import vault
 import os
+import github_process
 
 token = vault.get_Secret("replicate_key")
 os.environ["REPLICATE_API_TOKEN"] = token
@@ -11,6 +12,26 @@ os.environ["REPLICATE_API_TOKEN"] = token
 def identify_functions(file_names,file_contents):
     system_prompt = "Identify all defined functions in the input coding file. Return a python list with all the function names. Output should be in standard format 'filename: [function 1, function 2, etc.]'"
     functions = []
+    results = []
+    for i in range(len(file_names)):
+        prompt = file_names[i] + ": \n" + file_contents[i]
+        output = llama2_process.custom_prompt(system_prompt,prompt)
+        print("\n\n\n")
+        input = output + output
+        matches = regex.extract_matches(input)
+        print("Printing Matches from regex: ",matches)
+        results.append(matches)
+        #remove duplicates dictionaries from matches
+        # for match in matches:
+        #     functions.extend(match['functions'])
+        # functions = list(dict.fromkeys(functions))
+        # print("Printing functions: ",functions)
+    return functions,results
+
+def identify_functions_outside(file_names,file_contents):
+    system_prompt = "Identify all functions in the input code that is imported or defined in another file. Return a python list with all the function names. Output should be in standard format 'filename: [function 1, function 2, etc.]'"
+    functions = []
+    results = []
     for i in range(len(file_names)):
         prompt = file_names[i] + ": \n" + file_contents[i]
         output = llama2_process.custom_prompt(system_prompt,prompt)
@@ -18,12 +39,13 @@ def identify_functions(file_names,file_contents):
         input = output + output
         matches = regex.extract_matches(input)
         print(matches)
+        results.append(matches)
         #remove duplicates dictionaries from matches
-        for match in matches:
-            functions.extend(match['functions'])
-        functions = list(dict.fromkeys(functions))
-        print(functions)
-    pass
+        # for match in matches:
+        #     functions.extend(match['functions'])
+        # functions = list(dict.fromkeys(functions))
+        # print(functions)
+    return functions,results
 
 def try_image_ai():
     prompt = '''
@@ -163,15 +185,20 @@ def get_functions(file_path):
         print("Functions: ",functions)
         return functions
     # Example usage
-
+    pass
 
 if __name__ == "__main__":
-    file_path = '/Users/anushkasingh/Library/Group Containers/UBF8T346G9.OneDriveSyncClientSuite/Kathalyst.noindex/Kathalyst/Code/mvp-streamlit-local/vault.py'
-    with open(file_path, 'r',  encoding='latin-1') as f:
-        contents = f.read()
-        file_name = "vault.py"
-        file_names = [file_name]
-        file_contents = [contents]
-    identify_functions(file_names,file_contents)
+    
+    github_link = "https://github.com/anushkasingh98/test-repo1.git"
+    file_contents,file_names,dir = github_process.control(github_link)
 
-    # try_image_ai()
+    print("File Names\n",file_names)
+    print("Count of Num of Files: ",len(file_contents))
+    
+    functions, matches = identify_functions(file_names,file_contents)
+
+    print("First Round of Matches:\n",matches)
+
+    functions1, matches1 = identify_functions_outside(file_names,file_contents)
+
+    print(matches1)

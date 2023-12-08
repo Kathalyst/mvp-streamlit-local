@@ -16,14 +16,19 @@
 import re
 
 def extract_matches(text):
-    pattern = r'^(\w+\.\w+):\s*\[(\w+(?:,\s*\w+)*)\]$'
+    pattern = r'[A-Za-z0-9]+\.[A-Za-z]+: \[[^\]]*\]'
     matches = []
 
     # Find all matches in the text
     for match in re.finditer(pattern, text, re.MULTILINE):
-        filename = match.group(1)
-        functions = match.group(2).split(', ')
-        matches.append({"filename": filename, "functions": functions})
+        # filename = match.group(1)
+        # functions = match.group(2).split(', ')
+        # matches.append({"filename": filename, "functions": functions})
+        # matches.append()
+        print("Matches inside Regex: ",match)
+        print(f'The match is: {match.group(0)!r}')
+        matches.append(match.group(0))
+        print(matches)
 
     return matches
 
@@ -40,5 +45,5 @@ if __name__=="__main__":
     result = extract_matches(large_text)
     print(result)
 
-    for item in result:
-        print(f"Filename: {item['filename']}, Functions: {item['functions']}")
+    # for item in result:
+    #     print(f"Filename: {item['filename']}, Functions: {item['functions']}")

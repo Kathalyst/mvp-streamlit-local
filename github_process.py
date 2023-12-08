@@ -3,6 +3,7 @@ import subprocess
 import file_data
 
 ignore_file_types = [".png",".img",".csv",".ipynb",".MD",".md",".JPG",".jpg",".pyc",".sqlite3",".sample",".pack",".idx"]
+ignore_file_names = ["HEAD","main","exclude","config","index","description","packed-refs"]
 
 def clone_repo(github_link,directory):
     # Extract the repository name from the GitHub link
@@ -27,6 +28,10 @@ def read_files_in_directory(directory, file_contents, file_names):
             file_path = os.path.join(root, file)
             #ignore files with ext in ignore_file_types
             if any(ext in file for ext in ignore_file_types):
+                skipped_files += 1
+                continue
+            #if filename of file is in ignore_file_names, skip file
+            if any(name in file for name in ignore_file_names):
                 skipped_files += 1
                 continue
             with open(file_path, 'r',  encoding='latin-1') as f:
