@@ -1,11 +1,5 @@
 
-master_desc = """
-from dataclasses import dataclass
-import erdantic as erd
 
-class Function:\n\tdef __init__(self, name):\n\t\tself.function_name = name
-
-"""
 
 def create_tables(filename,internal_functions,external_functions,source):
     class_desc = f"""
@@ -14,6 +8,13 @@ class {filename.split('.')[0]}: """
     
     if len(external_functions) != len(source):
         print("The length of Source & length of External Functions DO NOT MATCH.\n")
+        print("Length of External Functions = ",len(external_functions))
+        print("Length of Source = ",len(source))
+        print("\n")
+        print(external_functions)
+        print("\n")
+        print(source)
+        print("\n")
         return
 
     for i in range(len(internal_functions)):
@@ -28,4 +29,4 @@ class {filename.split('.')[0]}: """
 
 if __name__ == "__main__":
 
-    exec(create_tables("abcd.py",["func1","func2","func3"]))
+    exec(create_tables("abcd.py",["func1","func2","func3"],[],[]))

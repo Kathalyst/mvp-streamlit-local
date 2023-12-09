@@ -6,6 +6,7 @@ import vault
 import os
 import github_process
 import json
+import testing_vdd3
 
 # token = vault.get_Secret("replicate_key")
 # os.environ["REPLICATE_API_TOKEN"] = token
@@ -21,7 +22,13 @@ Output all of this information in the format of a JSON defined below:
 }
 """
 
-master_vdd_code = ""
+master_desc = """
+from dataclasses import dataclass
+import erdantic as erd
+
+class Function:\n\tdef __init__(self, name):\n\t\tself.function_name = name
+
+"""
 
 def create_tables(filename,internal_functions):
     class_desc = """
@@ -40,7 +47,6 @@ def extract_json_blobs(content):
     jsons = []
     i = 0
     while i < len(content):
-        print("Inside while")
         if content[i] == '{':
             for j in range(len(content) - 1, i, -1):
                 if content[j] == '}':
@@ -96,31 +102,54 @@ def identify_functions_outside(file_names,file_contents):
         # print(functions)
     return functions,results
 
-def get_functions(file_path):
-    with open(file_path, 'r') as file:
-        print("Inside open")
-        code = compile(file.read(), file_path, 'exec')
-        print("Code: ",code)
-        print(code.co_varnames)
-        functions = [name for name, obj in inspect.getmembers(code) if inspect.isfunction(obj)]
-        print("Functions: ",functions)
-        return functions
-    # Example usage
-    pass
+# def get_functions(file_path):
+#     with open(file_path, 'r') as file:
+#         print("Inside open")
+#         code = compile(file.read(), file_path, 'exec')
+#         print("Code: ",code)
+#         print(code.co_varnames)
+#         functions = [name for name, obj in inspect.getmembers(code) if inspect.isfunction(obj)]
+#         print("Functions: ",functions)
+#         return functions
+#     # Example usage
+#     pass
 
 if __name__ == "__main__":
     
-    # github_link = "https://github.com/anushkasingh98/test-repo1.git"
-    # file_contents,file_names,dir = github_process.control(github_link)
+    github_link = "https://github.com/anushkasingh98/test-repo1.git"
+    file_contents,file_names,dir = github_process.control(github_link)
 
-    # print("File Names\n",file_names)
-    # print("Count of Num of Files: ",len(file_contents))
+    print("File Names\n",file_names)
+    print("Count of Num of Files: ",len(file_contents))
     
-    # functions, matches = identify_functions(file_names,file_contents)
+    functions, matches = identify_functions(file_names,file_contents)
 
-    # # functions1, matches1 = identify_functions_outside(file_names,file_contents)
+    # functions1, matches1 = identify_functions_outside(file_names,file_contents)
 
-    # print("First Round of Matches:\n",matches)
-    # # print("\nSecond Round of Matches:\n",matches1)
+    print("First Round of Matches:\n",matches)
+    # print("\nSecond Round of Matches:\n",matches1)
 
-    print(create_tables("abcd.py",["func1","func2","func3"]))
+    # print(create_tables("abcd.py",["func1","func2","func3"]))
+    print("\nPrinting One By One\n")
+    filename = ""
+    for match in matches:
+        print(match)
+        print(type(match))
+        for entry in match:
+            filename= entry['filename']
+            internal_functions = entry['internal_functions']
+            external_functions = entry['external_functions']
+            source_of_external_functions = entry['source_of_external_functions']
+            print("Filename",filename)
+            print("Internal Functions",internal_functions)
+            print("External Functions",external_functions)
+            print("Source of External Functions",source_of_external_functions)
+            print("\n\n\n")
+        
+            master_desc = master_desc + testing_vdd3.create_tables(filename,internal_functions,external_functions,source_of_external_functions)
+            print(master_desc)
+    
+    print("\nFilename:",filename)
+    master_desc = master_desc + f"\nerd.draw({filename.split('.')[0]}, out='trial_diagram.png')"
+    print(master_desc)
+    exec(master_desc)
