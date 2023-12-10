@@ -11,6 +11,7 @@ import re
 import ssl
 #import hello
 import os
+from footer import show_footer
 
 
 st.session_state.logged_in = False
@@ -96,6 +97,9 @@ def login_form():
                 result = cur.fetchone()
 
                 if result:
+                    cur.execute("UPDATE mvp.users SET login_count = login_count + 1 WHERE username = %s", (username,))
+                    conn.commit()
+
                     st.session_state.logged_in = True
                     st.success("Login successful.")
                     #st.snow()
@@ -202,13 +206,4 @@ with login_tabs:
     # with login_tab3:
     #     forgot_password_form()
 
-
-# if not st.session_state.logged_in:
-#     temp1 = st.empty()
-# else:
-#     os.system("hello.py")
-#     # Import the target page script
-#     #import hello
-
-#     # Run the target page script
-#     #exec(open("hello.py").read())
+show_footer()
