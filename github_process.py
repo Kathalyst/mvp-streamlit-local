@@ -3,7 +3,7 @@ import subprocess
 import file_data
 
 ignore_file_types = [".png",".img",".csv",".ipynb",".MD",".md",".JPG",".jpg",".pyc",".sqlite3",".sample",".pack",".idx"]
-ignore_file_names = ["HEAD","main","exclude","config","index","description","packed-refs"]
+ignore_file_names = ["HEAD","main","master","exclude","config","index","description","packed-refs"]
 
 def clone_repo(github_link,directory):
     # Extract the repository name from the GitHub link

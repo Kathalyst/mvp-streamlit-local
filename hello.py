@@ -14,6 +14,8 @@ st.set_page_config(
 
 st.header("Kathalyst - Automated Software Documentation")
 
+git,feedback = st.columns([3, 1])
+
 github_link = st.sidebar.text_input("Github Link")
 
 model = st.sidebar.radio("Which LLM Model would you like to use?",["GPT-4","Llama 2 70b"],index=0)
@@ -24,7 +26,7 @@ if st.sidebar.button("Submit"):
     
     file_contents,file_names,dir = github_process.control(github_link)
 
-    st.write("Processing Github Repo: "+str(github_link))
+    git.write("Processing Github Repo: "+str(github_link))
 
     doc,vdd = st.tabs(["Documentation","Visual Dependency Diagram"])
 
@@ -37,6 +39,7 @@ if st.sidebar.button("Submit"):
                 output = llama2_process.control(file_contents,file_names)
         st.markdown(output)
         st.download_button('Download Text File', output)
+    
     with vdd:
         print("\n\nInside VDD Tab")
         with st.spinner(text="In progress..."):
@@ -50,7 +53,7 @@ if st.sidebar.button("Submit"):
                 file_name=fil_name,
                 mime="image/png"
             )
-    pass
+    feedback.link_button("Give Us Feedback","https://forms.office.com/r/DmyrfUnxGt")
 
 example_links = ["https://github.com/anushkasingh98/personal-portfolio","https://github.com/anushkasingh98/demo-repo",
                  "https://github.com/anushkasingh98/CapitalisationProject"]
