@@ -15,7 +15,14 @@ class {filename.split('.')[0]}: """
         print("\n")
         print(source)
         print("\n")
-        return
+        if len(external_functions) > len(source):
+            print("Source is smaller")
+            for i in range(len(source),len(external_functions)):
+                source.append("None")
+        else:
+            print("External Functions is smaller")
+            for i in range(len(external_functions),len(source)):
+                external_functions.append("N/A")
 
     for i in range(len(internal_functions)):
         class_desc = class_desc + f"\n\t{internal_functions[i]}: Function\n\t"

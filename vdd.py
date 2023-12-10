@@ -1,15 +1,7 @@
-import inspect
 import llama2_process
-import regex
-import replicate
-import vault
-import os
 import github_process
 import json
-import testing_vdd3
-
-# token = vault.get_Secret("replicate_key")
-# os.environ["REPLICATE_API_TOKEN"] = token
+import graph_order
 
 prompt_system = """
 Identify all functions in the code given in the prompt. Categorize these functions into 2 categories, internal functions or functions defined in the given code, and external functions or functions that are being called from other code files and libraries.
@@ -18,7 +10,7 @@ Output all of this information in the format of a JSON defined below:
     "filename": filename
     "internal_functions": ["func1", "func2", "func3"],
     "external_functions": ["func4", "func5", "func6"],
-    "source_of_external_functions": ["source1","source2","source3"]
+    "source_of_external_functions": ["source_of_func4","source_of_func5","source_of_func6"]
 }
 """
 
@@ -30,18 +22,85 @@ class Function:\n\tdef __init__(self, name):\n\t\tself.function_name = name
 
 """
 
-def create_tables(filename,internal_functions):
-    class_desc = """
-class Function:
-    def __init__(self, name):
-        self.function_name = name
+defined_classes = []
+all_classes = []
 
-class {filename}:
-    {internal_functions[0]}: Function """
-    for i in range(1,len(internal_functions)):
-        class_desc = class_desc + "\n\t{internal_functions[i]}: Function\n\t"
+def create_tables(filename,internal_functions,external_functions,source):
+    funcs = []
+    correction_num = 1
+    mod_filename = filename.split('.')[0]
+    if('/' in mod_filename):
+        mod_filename = mod_filename.split('/')[0]
+    mod_filename.replace(" ","_")
+    
+    class_desc = f"""
+@dataclass
+class {filename.split('.')[0]}: """
+    
+    defined_classes.append(mod_filename)
+    
+    if len(external_functions) != len(source):
+        if len(external_functions) > len(source):
+            print("Source is smaller")
+            for i in range(len(source),len(external_functions)):
+                source.append("Source_Unknown")
+        else:
+            print("External Functions is smaller")
+            for i in range(len(external_functions),len(source)):
+                external_functions.append("N/A")
+
+    for i in range(len(internal_functions)):
+        mod_func = internal_functions[i]
+        if('.' in mod_func):
+            mod_func = mod_func.split('.')[-1]
+        if('/' in mod_func):
+            mod_func = mod_func.split('/')[0]
+        mod_func.replace(" ","")
+        mod_func.strip()
+
+        if mod_func in funcs:
+            mod_func += str(correction_num)
+            correction_num += 1
+
+        funcs.append(mod_func)
+
+        class_desc = class_desc + f"\n\t{mod_func}: Function\n\t"
+
+    for i in range(len(external_functions)):
+        mod_func = external_functions[i]
+        if('.' in mod_func):
+            mod_func = mod_func.split('.')[-1]
+        if('/' in mod_func):
+            mod_func = mod_func.split('/')[0]
+        mod_func.replace(" ","")
+        if mod_func in funcs:
+            mod_func += str(correction_num)
+            correction_num += 1
+        funcs.append(mod_func)
+
+        mod_source = source[i]
+        mod_source = mod_source.replace(" ","")
+        mod_source = mod_source.split('.')[0]
+        mod_source = mod_source.split('/')[0]
+
+        class_desc = class_desc + f"\n\t{mod_func}: {mod_source}\n\t"
+        all_classes.append(mod_source)
+    print(class_desc)
     return class_desc
 
+def post_processing(defined_classes,all_classes,master_desc):
+    print("Defined Classes: ",defined_classes)
+    print("All Classes: ",all_classes)
+
+    defined_classes = list(set(defined_classes))
+    all_classes = list(set(all_classes))
+
+    for i in range(len(all_classes)):
+        if all_classes[i] not in defined_classes:
+            print("Class ",all_classes[i]," is not defined in the code. Creating a class for it.")
+            master_desc = master_desc + f"\nclass {all_classes[i]}:\n\tdef __init__(self, name):\n\t\tself.function_name = name"
+    print("Master Desc: ",master_desc)
+    return master_desc
 
 def extract_json_blobs(content):
     jsons = []
@@ -76,62 +135,23 @@ def identify_functions(file_names,file_contents):
         matches = extract_json_blobs(output)
         print("\nPrinting Matches from JSON: ",matches)
         results.append(matches)
-        #remove duplicates dictionaries from matches
-        # for match in matches:
-        #     functions.extend(match['functions'])
-        # functions = list(dict.fromkeys(functions))
-        # print("Printing functions: ",functions)
     return functions,results
 
-def identify_functions_outside(file_names,file_contents):
-    system_prompt = "Identify & List all functions in the input code that is imported or defined in another file or is being called from an external source. Return a python list with all the function names. Output should contain the source of the function in () brackets after the function name."
-    functions = []
-    results = []
-    for i in range(len(file_names)):
-        prompt = file_names[i] + ": \n" + file_contents[i]
-        output = llama2_process.custom_prompt(system_prompt,prompt)
-        print("\n\n\n")
-        input = output + output
-        matches = regex.extract_matches(input)
-        print(matches)
-        results.append(matches)
-        #remove duplicates dictionaries from matches
-        # for match in matches:
-        #     functions.extend(match['functions'])
-        # functions = list(dict.fromkeys(functions))
-        # print(functions)
-    return functions,results
-
-# def get_functions(file_path):
-#     with open(file_path, 'r') as file:
-#         print("Inside open")
-#         code = compile(file.read(), file_path, 'exec')
-#         print("Code: ",code)
-#         print(code.co_varnames)
-#         functions = [name for name, obj in inspect.getmembers(code) if inspect.isfunction(obj)]
-#         print("Functions: ",functions)
-#         return functions
-#     # Example usage
-#     pass
-
-if __name__ == "__main__":
-    
-    github_link = "https://github.com/anushkasingh98/test-repo1.git"
-    file_contents,file_names,dir = github_process.control(github_link)
-
-    print("File Names\n",file_names)
-    print("Count of Num of Files: ",len(file_contents))
-    
-    functions, matches = identify_functions(file_names,file_contents)
+def process_control(file_contents,file_names,image_filename):
+    print("Inside VDD Control")
+    functions, matches1 = identify_functions(file_names,file_contents)
 
     # functions1, matches1 = identify_functions_outside(file_names,file_contents)
-
+    matches = graph_order.new_order_for_processing(matches1)
     print("First Round of Matches:\n",matches)
     # print("\nSecond Round of Matches:\n",matches1)
 
     # print(create_tables("abcd.py",["func1","func2","func3"]))
     print("\nPrinting One By One\n")
     filename = ""
+
+    class_desc = []
+
     for match in matches:
         print(match)
         print(type(match))
@@ -146,10 +166,26 @@ if __name__ == "__main__":
             print("Source of External Functions",source_of_external_functions)
             print("\n\n\n")
         
-            master_desc = master_desc + testing_vdd3.create_tables(filename,internal_functions,external_functions,source_of_external_functions)
-            print(master_desc)
+            class_desc.append(create_tables(filename,internal_functions,external_functions,source_of_external_functions))
     
     print("\nFilename:",filename)
-    master_desc = master_desc + f"\nerd.draw({filename.split('.')[0]}, out='trial_diagram.png')"
-    print(master_desc)
+    master_desc = post_processing(defined_classes,all_classes,master_desc)
+
+    for desc in class_desc:
+        master_desc = master_desc + desc
+
+    master_desc = master_desc + f"\nerd.draw({filename.split('.')[0]}, out='{image_filename}.png')"
+    print("Master Desc:\n",master_desc)
     exec(master_desc)
+    ret = image_filename + ".png"
+    return ret
+
+if __name__ == "__main__":
+    
+    github_link = "https://github.com/anushkasingh98/test-repo1.git"
+    file_contents,file_names,dir = github_process.control(github_link)
+
+    print("File Names\n",file_names)
+    print("Count of Num of Files: ",len(file_contents))
+    
+    process_control(file_contents,file_names,"diagram_trial")

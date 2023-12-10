@@ -3,6 +3,7 @@ import github_process
 import gpt4_process
 import llama2_process
 import pandas as pd
+import vdd
 
 st.set_page_config(
     page_title="Kathalyst Web App",
@@ -35,10 +36,13 @@ if st.sidebar.button("Submit"):
             elif model == "Llama 2 70b":
                 output = llama2_process.control(file_contents,file_names)
         st.markdown(output)
+        # st.download_button()
     with vdd:
-        # print("\n\nInside VDD Tab")
-        st.write("Visual Dependency Diagram coming soon ...")
-    
+        print("\n\nInside VDD Tab")
+        with st.spinner(text="In progress..."):
+            # fil_name = vdd.control(file_contents,file_names,"diagram")
+            fil_name = vdd.process_control(file_contents,file_names,"diagram")
+        st.image(fil_name)
     pass
 
 example_links = ["https://github.com/anushkasingh98/personal-portfolio","https://github.com/anushkasingh98/demo-repo",
