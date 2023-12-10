@@ -3,7 +3,7 @@ import github_process
 import gpt4_process
 import llama2_process
 import pandas as pd
-import vdd
+import vdd_diagram
 
 st.set_page_config(
     page_title="Kathalyst Web App",
@@ -41,7 +41,7 @@ if st.sidebar.button("Submit"):
         print("\n\nInside VDD Tab")
         with st.spinner(text="In progress..."):
             # fil_name = vdd.control(file_contents,file_names,"diagram")
-            fil_name = vdd.process_control(file_contents,file_names,"diagram")
+            fil_name = vdd_diagram.process_control(file_contents,file_names,"diagram")
         st.image(fil_name)
     pass
 
