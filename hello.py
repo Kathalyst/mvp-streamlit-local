@@ -36,13 +36,20 @@ if st.sidebar.button("Submit"):
             elif model == "Llama 2 70b":
                 output = llama2_process.control(file_contents,file_names)
         st.markdown(output)
-        # st.download_button()
+        st.download_button('Download Text File', output)
     with vdd:
         print("\n\nInside VDD Tab")
         with st.spinner(text="In progress..."):
             # fil_name = vdd.control(file_contents,file_names,"diagram")
             fil_name = vdd_diagram.process_control(file_contents,file_names,"diagram")
         st.image(fil_name)
+        with open(fil_name, "rb") as file:
+            btn = st.download_button(
+                label="Download image",
+                data=file,
+                file_name=fil_name,
+                mime="image/png"
+            )
     pass
 
 example_links = ["https://github.com/anushkasingh98/personal-portfolio","https://github.com/anushkasingh98/demo-repo",

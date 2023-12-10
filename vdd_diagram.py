@@ -10,16 +10,8 @@ Output all of this information in the format of a JSON defined below:
     "filename": filename
     "internal_functions": ["func1", "func2", "func3"],
     "external_functions": ["func4", "func5", "func6"],
-    "source_of_external_functions": ["source_of_func4","source_of_func5","source_of_func6"]
+    "source_of_external_functions": ["source1","source2","source3"]
 }
-"""
-
-master_desc = """
-from dataclasses import dataclass
-import erdantic as erd
-
-class Function:\n\tdef __init__(self, name):\n\t\tself.function_name = name
-
 """
 
 defined_classes = []
@@ -32,6 +24,8 @@ def create_tables(filename,internal_functions,external_functions,source):
     if('/' in mod_filename):
         mod_filename = mod_filename.split('/')[0]
     mod_filename.replace(" ","_")
+    mod_filename.strip()
+    mod_filename = mod_filename.replace(":","")
     
     class_desc = f"""
 @dataclass
@@ -138,6 +132,14 @@ def identify_functions(file_names,file_contents):
     return functions,results
 
 def process_control(file_contents,file_names,image_filename):
+    master_desc = """
+from dataclasses import dataclass
+import erdantic as erd
+
+class Function:\n\tdef __init__(self, name):\n\t\tself.function_name = name
+
+"""
+    
     print("Inside VDD Control")
     functions, matches1 = identify_functions(file_names,file_contents)
 
