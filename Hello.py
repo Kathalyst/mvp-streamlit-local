@@ -17,7 +17,6 @@ def home():
     hide_pages(['App'])
 
     st.sidebar.empty()
-    #hide sidebar in streamlit app
 
     custom_css = """
     <style>

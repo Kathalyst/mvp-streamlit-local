@@ -58,7 +58,10 @@ def remove_empty_files(file_names,file_contents):
     return file_contents,file_names
 
 def control(github_repo):
-    directory = '/Users/anushkasingh/Desktop/Kathalyst/Code/GithubTestRepos'
+    current_directory = os.getcwd()
+    directory = os.path.join(current_directory, r'Git-Processing-Folder')
+    if not os.path.exists(directory):
+        os.makedirs(directory)
 
     # clone repo to directory
     dir = clone_repo(github_repo,directory)
