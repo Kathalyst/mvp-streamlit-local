@@ -8,10 +8,28 @@ from st_pages import Page, show_pages, hide_pages
 from streamlit_extras.switch_page_button import switch_page
 from footer import show_footer
 
-st.set_page_config(
-    page_title="Kathalyst Web App",
-    page_icon="images/codeAID_green.png",
-)
+# st.set_page_config(
+#     page_title="Kathalyst Web App",
+#     page_icon="images/codeAID_green.png",
+# )
+
+@st.cache_data
+def vdd(file_contents,file_names):
+    try:
+        with st.spinner(text="In progress..."):
+                    # fil_name = vdd.control(file_contents,file_names,"diagram")
+            fil_name = vdd_diagram.process_control(file_contents,file_names,"diagram")
+            st.image(fil_name)
+            with open(fil_name, "rb") as file:
+                btn = st.download_button(
+                        label="Download image",
+                        data=file,
+                        file_name=fil_name,
+                        mime="image/png"
+                    )
+    except e:
+        print(e)
+        st.info("We are working hard on our artistic skills to develop the best possible diagram for you. We will get back to you very soon!")
 
 show_pages([
         Page("Hello.py","Home"),
@@ -59,6 +77,8 @@ with st.expander("Directions to Use App"):
 
 
 
+print("\n\n")
+
 git,feedback = st.columns([3, 1])
 
 github_link = st.sidebar.text_input("Github Link")
@@ -66,48 +86,10 @@ github_link = st.sidebar.text_input("Github Link")
 model = st.sidebar.radio("Which LLM Model would you like to use?",["Llama 2 70b"],index=0)
 # model = st.sidebar.radio("Which LLM Model would you like to use?",["GPT-4","Llama 2 70b"],index=0)
 
-if st.sidebar.button("Submit"):
+submit = st.sidebar.button("Submit")
 
-    if github_link == "":
-        st.warning("Github Link not entered. Please Input a valid link.")
-        st.stop()
-    #process if submit button is pressed
-    print(f'Processing {github_link}')
-    
-    file_contents,file_names,dir = github_process.control(github_link)
-
-    git.write("Processing Github Repo: "+str(github_link))
-    feedback.link_button("Give Us Feedback","https://forms.office.com/r/DmyrfUnxGt")
-
-    doc,vdd = st.tabs(["Documentation","Visual Dependency Diagram"])
-
-    with doc:
-        # print("\n\nInside Documentation Tab")
-        with st.spinner(text="In progress..."):
-            if model == "Llama 2 70b":
-                output = llama2_process.control(file_contents,file_names)
-            # elif model == "GPT-4":
-            #     output = gpt4_process.control(file_contents,file_names,dir)
-        st.markdown(output)
-        st.download_button('Download Text File', output)
-    
-    with vdd:
-        print("\n\nInside VDD Tab")
-        with st.spinner(text="In progress..."):
-            # fil_name = vdd.control(file_contents,file_names,"diagram")
-            fil_name = vdd_diagram.process_control(file_contents,file_names,"diagram")
-        st.image(fil_name)
-        with open(fil_name, "rb") as file:
-            btn = st.download_button(
-                label="Download image",
-                data=file,
-                file_name=fil_name,
-                mime="image/png"
-            )
-    
-
-example_links = ["https://github.com/anushkasingh98/personal-portfolio","https://github.com/anushkasingh98/demo-repo",
-                 "https://github.com/anushkasingh98/CapitalisationProject"]
+example_links = ["https://github.com/Kathalyst/CalculatorInJavaScript","https://github.com/Kathalyst/TaskManager"]
+# ["https://github.com/anushkasingh98/personal-portfolio","https://github.com/anushkasingh98/demo-repo","https://github.com/anushkasingh98/CapitalisationProject"]
 df = pd.DataFrame(example_links,columns=["Example Github Links"])
 
 st.sidebar.table(df)
@@ -125,3 +107,47 @@ if st.sidebar.button("Log Out"):
 #     pass
 
 show_footer()
+
+if submit:
+
+    if github_link == "":
+        st.warning("Github Link not entered. Please Input a valid link.")
+        st.stop()
+    #process if submit button is pressed
+    print(f'Processing {github_link}')
+    
+    file_contents,file_names,dir = github_process.control(github_link)
+
+    git.write("Processing Github Repo: "+str(github_link))
+    feedback.link_button("Give Us Feedback","https://forms.office.com/r/DmyrfUnxGt")
+
+    doc,vdd = st.tabs(["Documentation","Visual Dependency Diagram"])
+    print(f"\n\n\nFile Names: {file_names}")
+
+    with doc:
+        # print("\n\nInside Documentation Tab")
+        with st.spinner(text="In progress..."):
+            if model == "Llama 2 70b":
+                output = llama2_process.control(file_contents,file_names)
+            # elif model == "GPT-4":
+            #     output = gpt4_process.control(file_contents,file_names,dir)
+        st.markdown(output)
+        st.download_button('Download Text File', output)
+    
+    with vdd:
+        print("\n\nInside VDD Tab")
+        try:
+            with st.spinner(text="In progress..."):
+                        # fil_name = vdd.control(file_contents,file_names,"diagram")
+                fil_name = vdd_diagram.process_control(file_contents,file_names,"diagram")
+                st.image(fil_name)
+                with open(fil_name, "rb") as file:
+                    btn = st.download_button(
+                            label="Download image",
+                            data=file,
+                            file_name=fil_name,
+                            mime="image/png"
+                        )
+        except:
+            st.info("We are working hard on our artistic skills to develop the best possible diagram for you. We will get back to you very soon!")
+

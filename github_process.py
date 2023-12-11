@@ -2,7 +2,7 @@ import os
 import subprocess
 import file_data
 
-ignore_file_types = [".png",".img",".csv",".ipynb",".MD",".md",".JPG",".jpg",".pyc",".sqlite3",".sample",".pack",".idx"]
+ignore_file_types = [".png",".img",".csv",".ipynb",".MD",".md",".JPG",".jpg",".pyc",".sqlite3",".sample",".pack",".idx",".wav"]
 ignore_file_names = ["HEAD","main","master","exclude","config","index","description","packed-refs"]
 
 def clone_repo(github_link,directory):
@@ -26,6 +26,7 @@ def read_files_in_directory(directory, file_contents, file_names):
         for file in [f for f in files if not f[0] == '.']:
             total_files += 1
             file_path = os.path.join(root, file)
+            print("Trying to Read File: ", file)
             #ignore files with ext in ignore_file_types
             if any(ext in file for ext in ignore_file_types):
                 skipped_files += 1
