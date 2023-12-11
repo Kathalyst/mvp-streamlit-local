@@ -1,6 +1,0 @@
-from propelauth_py import init_base_auth
-
-auth = init_base_auth("https://9228599678.propelauthtest.com", "Bearer 35186062bc455b9b621f92d3dd8e58cbcbcbf82759de7e470282e1dcc18fd3ba64bbeee07b6a0d2cca382864e6fdc0de")
-
-
-# API Key : 35186062bc455b9b621f92d3dd8e58cbcbcbf82759de7e470282e1dcc18fd3ba64bbeee07b6a0d2cca382864e6fdc0de
