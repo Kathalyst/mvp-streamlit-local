@@ -16,6 +16,11 @@ from footer import show_footer
 
 st.session_state.logged_in = False
 
+# st.set_page_config(
+#     page_title="Kathalyst Web App",
+#     page_icon="images/codeAID_green.png",
+# )
+
 custom_css = """
 <style>
     /* Set color for text */
