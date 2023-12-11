@@ -24,9 +24,9 @@ class module:
 class shutil:
         def __init__(self, name):
                 self.function_name = name
-class global:
-        def __init__(self, name):
-                self.function_name = name
+# class global:
+#         def __init__(self, name):
+#                 self.function_name = name
 class source2:
         def __init__(self, name):
                 self.function_name = name
@@ -41,7 +41,7 @@ class master:
 
         require: module
 
-        log: global
+        # log: global
 
 @dataclass
 class main: 
