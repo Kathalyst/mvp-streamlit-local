@@ -10,7 +10,7 @@ from datetime import datetime
 
 def home():
     show_pages([
-        Page("home.py","Home"),
+        Page("Hello.py","Home"),
         Page("app.py","App")
     ])
 
@@ -160,6 +160,8 @@ def home():
             login_form()
         with login_tab2:
             register_user_form()
+    
+    show_footer()
 
 
 home()

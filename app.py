@@ -6,6 +6,7 @@ import pandas as pd
 import vdd_diagram
 from st_pages import Page, show_pages, hide_pages
 from streamlit_extras.switch_page_button import switch_page
+from footer import show_footer
 
 st.set_page_config(
     page_title="Kathalyst Web App",
@@ -13,7 +14,7 @@ st.set_page_config(
 )
 
 show_pages([
-        Page("home.py","Home"),
+        Page("Hello.py","Home"),
         Page("app.py","App")
     ])
 
@@ -89,3 +90,5 @@ if st.sidebar.button("Log Out"):
 #     placeholder.empty()
 # elif clear == "No":
 #     pass
+
+show_footer()
