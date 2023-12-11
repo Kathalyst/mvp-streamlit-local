@@ -1,8 +1,6 @@
 altair
 numpy
 pandas
-pydeck
-pygraphviz
 streamlit
 st_pages
 openai
