@@ -32,20 +32,22 @@ st.markdown(
             unsafe_allow_html=True,
         )
 
-directions = st.container()
-directions.markdown("""
-                Directions to use this application:
+with st.expander("Directions to Use App"):
 
-                1. Open the Left Side Bar and enter the link to a 'public' Github Repository. You can even pick one of the example Github Repositories we have provided.
-                2. Select the LLM Model you would like to use. We recommend using Llama2 for fastest results.
-                3. Click Submit.
-                4. Wait for the results to load. This may take a few minutes.
-                5. Once the results are loaded, you can view the documentation and the visual dependency diagram.
-                6. If you scroll down, You can also download the documentation and the visual dependency diagram by clicking the respective Download buttons.
-                7. To give us Feedback, please click the "Give Us Feedback" button on the top right side of your screen.
-                
-                We hope you find Kathalyst useful in your endeavors. We would love to hear your feedback!
-            """)
+    st.markdown("""
+                    Directions to use this application:
+
+                    1. Open the Left Side Bar and enter the link to a 'public' Github Repository. You can even pick one of the example Github Repositories we have provided.
+                    2. Select the LLM Model you would like to use. We recommend using Llama2 for fastest results.
+                    3. Click Submit.
+                    4. Wait for the results to load. This may take a few minutes.
+                    5. Once the results are loaded, you can view the documentation and the visual dependency diagram.
+                    6. If you scroll down, You can also download the documentation and the visual dependency diagram by clicking the respective Download buttons.
+                    7. To give us Feedback, please click the "Give Us Feedback" button that will appear on your screen.
+                    
+                    We hope you find Kathalyst useful in your endeavors. We would love to hear your feedback!
+                """)
+
 
 git,feedback = st.columns([3, 1])
 
@@ -54,7 +56,6 @@ github_link = st.sidebar.text_input("Github Link")
 model = st.sidebar.radio("Which LLM Model would you like to use?",["GPT-4","Llama 2 70b"],index=0)
 
 if st.sidebar.button("Submit"):
-    directions.empty()
     #process if submit button is pressed
     print(f'Processing {github_link}')
     
