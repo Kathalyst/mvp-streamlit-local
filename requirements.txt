@@ -3,7 +3,7 @@ numpy
 pandas
 streamlit
 st_pages
-openai
+openai==0.28
 replicate
 erdantic
 psycopg2-binary
