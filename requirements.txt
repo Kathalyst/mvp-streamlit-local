@@ -9,3 +9,5 @@ erdantic
 psycopg2-binary
 streamlit-extras
 pygraphviz
+pydot
+tiktoken
