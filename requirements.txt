@@ -7,4 +7,5 @@ openai
 replicate
 erdantic
 psycopg2-binary
+streamlit_extras
 pygraphviz
