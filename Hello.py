@@ -7,7 +7,7 @@ import psycopg2
 import hashlib
 import re
 from datetime import datetime
-
+    
 def home():
     show_pages([
         Page("Hello.py","Home"),

@@ -19,8 +19,9 @@ def create_base_prompt(file_contents,file_names):
     return prompt
 
 def check_prompt_tokens(prompt):
-    encoding = tiktoken.encoding_for_model(model)
-    num_tokens = len(encoding.encode(prompt))
+    # calculate number of characters in prompt
+    characters = len(prompt)
+    num_tokens = characters/4
     print("Num of Tokens in prompt: ",num_tokens)
     if (num_tokens > token_threshold):
         print("Inside IF num tokens condition")
@@ -101,3 +102,7 @@ def control(file_contents,file_names,dir):
 
     # return combined response
     return text
+
+if __name__ == "__main__":
+    file_contents,file_names,dir = file_data.get_file_data()
+    control(file_contents,file_names,dir)
