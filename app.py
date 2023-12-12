@@ -81,7 +81,11 @@ print("\n\n")
 
 git,feedback = st.columns([3, 1])
 
-github_link = st.sidebar.text_input("Github Link")
+github_link = st.sidebar.text_input("""
+Github Link:
+
+(Note: Please make your repository public before using the tool.)
+""")
 
 model = st.sidebar.radio("Which LLM Model would you like to use?",["Llama 2 70b"],index=0)
 # model = st.sidebar.radio("Which LLM Model would you like to use?",["GPT-4","Llama 2 70b"],index=0)
