@@ -50,6 +50,12 @@ st.markdown(
             unsafe_allow_html=True,
         )
 
+with st.expander("Disclaimer"):
+
+    st.markdown("""
+    The following documentation has been generated using Large Languages Models and shouldn't be considered sole source of truth. User discretion advised in usage and distribution.
+                """)
+
 with st.expander("Directions to Use App"):
 
     st.markdown("""
