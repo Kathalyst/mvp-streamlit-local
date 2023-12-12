@@ -50,11 +50,10 @@ st.markdown(
             unsafe_allow_html=True,
         )
 
-with st.expander("Disclaimer"):
-
-    st.markdown("""
-    The following documentation has been generated using Large Languages Models and shouldn't be considered sole source of truth. User discretion advised in usage and distribution.
-                """)
+st.markdown("""
+            <p style="color: #f1f1f1; font-size: 14px; display: inline-block;">Disclaimer: The following documentation has been generated using Large Languages Models and shouldn't be considered sole source of truth. User discretion advised in usage and distribution.</p>
+            """,
+            unsafe_allow_html=True)
 
 with st.expander("Directions to Use App"):
 
