@@ -103,6 +103,10 @@ def home():
                     else:
                         st.error("Invalid username or password.")
 
+    def email_exists(email):
+        cur.execute("SELECT * FROM mvp.users WHERE email = %s", (email,))
+        result = cur.fetchone()
+        return result is not None
 
     def is_valid_email(email):
         #Simple email validation using regex
@@ -126,11 +130,9 @@ def home():
             
             if st.form_submit_button("Sign Up"):
                 if username and password and email:
-                    cur.execute("SELECT * FROM mvp.users WHERE username = %s", (username,))
-                    result = cur.fetchone()
 
-                    if result:
-                        st.error("Username already exists.")
+                    if email_exists(email):
+                        st.error("Email already exists.")
                     elif not is_valid_email(email):
                         st.error("Please enter a valid email address.")
                     elif not is_valid_password(password):

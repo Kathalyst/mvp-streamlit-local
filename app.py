@@ -102,7 +102,7 @@ submit = st.sidebar.button("Submit")
 example_links = ["https://github.com/Kathalyst/CalculatorInJavaScript","https://github.com/Kathalyst/TaskManager"]
 # ["https://github.com/anushkasingh98/personal-portfolio","https://github.com/anushkasingh98/demo-repo","https://github.com/anushkasingh98/CapitalisationProject"]
 df = pd.DataFrame(example_links,columns=["Example Github Links"])
-
+df.index = df.index + 1
 st.sidebar.table(df)
 
 st.sidebar.markdown("Made with ❤️ by Kathalyst")
