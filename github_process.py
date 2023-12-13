@@ -11,13 +11,33 @@ def clone_repo(github_link,directory):
     # Create the directory if it doesn't exist
     if not os.path.exists(directory):
         os.makedirs(directory)
-    else:
-        #empty directory
-        file_data.empty_directory(directory)
-        print("\n Directory after empty_directory: ",directory)
-        
+    
+    path = os.path.join(directory, repo_name)
+
+    # if path exists, empty the directory psth
+    if os.path.exists(path):
+        # unlink all files in path 
+        # print("Emptying directory ... ",path)
+        # for filename in os.listdir(path):
+        #     file_path = os.path.join(path, filename)
+        #     try:
+        #         if os.path.isfile(file_path) or os.path.islink(file_path):
+        #             os.unlink(file_path)
+        #     except Exception as e:
+        #         print('Failed to delete %s. Reason: %s' % (file_path, e))
+        # #delete folder in path and all files in it
+        print("Deleting directory ... ",path)
+        from pathlib import Path
+        from shutil import rmtree
+
+        for p in Path(path).glob("**/*"):
+            if p.is_file():
+                p.unlink()
+            elif p.is_dir():
+                rmtree(p)
+
     # Clone the repository to the specified directory
-    subprocess.run(["git", "clone", github_link, os.path.join(directory, repo_name)])
+    subprocess.run(["git", "clone", github_link, path])
     dir = os.path.join(directory, repo_name)
     print("\n Directory after clone_repo: ",dir)
     return dir
@@ -79,3 +99,11 @@ def control(github_repo):
     file_contents, file_names = remove_empty_files(file_names,file_contents)
 
     return file_contents,file_names,dir
+
+if __name__ == "__main__":
+    github_link = "https://github.com/Kathalyst/TaskManager"
+    current_directory = os.getcwd()
+    directory = os.path.join(current_directory, r'Git-Processing-Folder')
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+    dir = clone_repo(github_link,directory)
