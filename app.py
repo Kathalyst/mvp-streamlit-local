@@ -99,7 +99,7 @@ model = st.sidebar.radio("Which LLM Model would you like to use?",["Llama 2 70b"
 
 submit = st.sidebar.button("Submit")
 
-example_links = ["https://github.com/Kathalyst/CalculatorInJavaScript","https://github.com/Kathalyst/TaskManager"]
+example_links = ["https://github.com/anushkasingh98/testing-repo2","https://github.com/Kathalyst/TaskManager"]
 # ["https://github.com/anushkasingh98/personal-portfolio","https://github.com/anushkasingh98/demo-repo","https://github.com/anushkasingh98/CapitalisationProject"]
 df = pd.DataFrame(example_links,columns=["Example Github Links"])
 df.index = df.index + 1
