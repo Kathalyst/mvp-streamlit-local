@@ -72,7 +72,7 @@ def control(file_contents,file_names):
             "prompt": prompt,
             "temperature": 0.5,
             "system_prompt":"You will be provided with multiple file contents from one project, and your task is to create a README file for the project. Only respond with the README file contents.",
-            "max_new_tokens": 500,
+            "max_new_tokens": 5000,
             "min_new_tokens": -1
         }
     )

@@ -4,9 +4,11 @@ import gpt4_process
 import llama2_process
 import pandas as pd
 import vdd_diagram
+import vdd2
 from st_pages import Page, show_pages, hide_pages
 from streamlit_extras.switch_page_button import switch_page
 from footer import show_footer
+import subprocess
 
 # st.set_page_config(
 #     page_title="Kathalyst Web App",
@@ -148,14 +150,17 @@ if submit:
         try:
             with st.spinner(text="In progress..."):
                         # fil_name = vdd.control(file_contents,file_names,"diagram")
-                fil_name = vdd_diagram.process_control(file_contents,file_names,"diagram")
-                st.image(fil_name)
-                with open(fil_name, "rb") as file:
+                # fil_name = vdd_diagram.process_control(file_contents,file_names,"diagram")
+                dbml_fil_name = vdd2.vdd_file_creation(file_contents,file_names,"diagram")
+
+                subprocess.run(["dbml-renderer", "-i", dbml_fil_name, "-o", "diagram.svg"])
+                st.image("diagram.svg")
+                with open("diagram.svg", "rb") as file:
                     btn = st.download_button(
                             label="Download image",
                             data=file,
                             file_name=fil_name,
-                            mime="image/png"
+                            mime="image/svg+xml"
                         )
         except:
             st.info("We are working hard on our artistic skills to develop the best possible diagram for you. We will get back to you very soon!")

@@ -142,8 +142,7 @@ class Function:\n\tdef __init__(self, name):\n\t\tself.function_name = name
     
     print("Inside VDD Control")
     functions, matches1 = identify_functions(file_names,file_contents)
-
-    # functions1, matches1 = identify_functions_outside(file_names,file_contents)
+    
     matches = graph_order.new_order_for_processing(matches1)
     print("First Round of Matches:\n",matches)
     # print("\nSecond Round of Matches:\n",matches1)
