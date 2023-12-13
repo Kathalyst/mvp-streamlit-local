@@ -187,7 +187,7 @@ def vdd_file_creation(file_contents,file_names,dbml_filename):
 
 if __name__ == "__main__":
     
-    github_link = "https://github.com/anushkasingh98/test-repo1.git"
+    github_link = "https://github.com/anushkasingh98/testing-repo2"
     file_contents,file_names,dir = github_process.control(github_link)
 
     print("File Names\n",file_names)

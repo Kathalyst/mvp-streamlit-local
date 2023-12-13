@@ -11,6 +11,11 @@ def clone_repo(github_link,directory):
     # Create the directory if it doesn't exist
     if not os.path.exists(directory):
         os.makedirs(directory)
+    else:
+        #empty directory
+        file_data.empty_directory(directory)
+        print("\n Directory after empty_directory: ",directory)
+        
     # Clone the repository to the specified directory
     subprocess.run(["git", "clone", github_link, os.path.join(directory, repo_name)])
     dir = os.path.join(directory, repo_name)
