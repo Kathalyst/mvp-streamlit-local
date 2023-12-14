@@ -18,38 +18,21 @@ def home():
 
     st.sidebar.empty()
 
-    custom_css = """
-    <style>
-        /* Set color for text */
-        body {
-            color: #71eea8 !important;
-        }
-
-        /* Set color for button text */
-        .css-1oktun7.e1m5b4gh0:hover {
-            color: #71eea8 !important;
-        }
-
-        /* Set color for button background on hover */
-        .css-1oktun7.e1m5b4gh0:hover:not([disabled]) {
-            background-color: #71eea8 !important;
-        }
-    </style>
-    """
-    st.markdown(custom_css, unsafe_allow_html=True)
-
-    TITLE: Final = "Welcome to Kathalyst"
-
-    def pretty_title(title: str) -> None:
-        """Make a centered title, and give it a red line. Adapted from
-        'streamlit_extras.colored_headers' package.
+    def pretty_title(title: str, header_line: str) -> None:
+        """Make a centered title with a header line.
         Parameters:
         -----------
         title : str
             The title of your page.
+        header_line : str
+            The header line below the title.
         """
         st.markdown(
-            f"<h2 style='text-align: center'>{title}</h2>",
+            f"<h1 style='text-align: center'>{title}</h1>",
+            unsafe_allow_html=True,
+        )
+        st.markdown(
+            f"<h3 style='text-align: center'>{header_line}</h3>",
             unsafe_allow_html=True,
         )
         st.markdown(
@@ -60,7 +43,53 @@ def home():
             unsafe_allow_html=True,
         )
 
-    pretty_title(TITLE)
+    TITLE = "Welcome to Kathalyst"
+    HEADER_LINE = "Bridging Code and Clarity with AI-Driven Documentation."
+    pretty_title(TITLE, HEADER_LINE)
+
+    # custom_css = """
+    # <style>
+    #     /* Set color for text */
+    #     body {
+    #         color: #71eea8 !important;
+    #     }
+
+    #     /* Set color for button text */
+    #     .css-1oktun7.e1m5b4gh0:hover {
+    #         color: #71eea8 !important;
+    #     }
+
+    #     /* Set color for button background on hover */
+    #     .css-1oktun7.e1m5b4gh0:hover:not([disabled]) {
+    #         background-color: #71eea8 !important;
+    #     }
+    # </style>
+    # """
+    # st.markdown(custom_css, unsafe_allow_html=True)
+
+    # TITLE: Final = "Welcome to Kathalyst"
+
+    # def pretty_title(title: str) -> None:
+    #     """Make a centered title, and give it a red line. Adapted from
+    #     'streamlit_extras.colored_headers' package.
+    #     Parameters:
+    #     -----------
+    #     title : str
+    #         The title of your page.
+    #     """
+    #     st.markdown(
+    #         f"<h2 style='text-align: center'>{title}</h2>",
+    #         unsafe_allow_html=True,
+    #     )
+    #     st.markdown(
+    #         (
+    #             '<hr style="background-color: #71eea8; margin-top: 0;'
+    #             ' margin-bottom: 0; height: 3px; border: none; border-radius: 3px;">'
+    #         ),
+    #         unsafe_allow_html=True,
+    #     )
+
+    # pretty_title(TITLE)
 
     try:
         conn = psycopg2.connect(
