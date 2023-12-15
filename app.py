@@ -18,7 +18,6 @@ from npm1 import install_npm
 #     page_icon="images/codeAID_green.png",
 # )
 
-
 install_npm()
 
 @st.cache_data
