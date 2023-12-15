@@ -12,7 +12,7 @@ def install_npm():
     # run command nvm install node
     # subprocess.run(["nvm", "install", "node"])
 
-    subprocess.run(["npm", "install", "-g", "@softwaretechnik/dbml-renderer"])
+    # subprocess.run(["npm", "install", "-g", "@softwaretechnik/dbml-renderer"])
     # create package.json file for installing npm package @softwaretechnik/dbml-renderer
     # subprocess.run(["npm", "init", "-y"])
     # subprocess.run(["npm", "install", "@softwaretechnik/dbml-renderer"])
