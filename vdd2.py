@@ -167,9 +167,9 @@ def vdd_file_creation(file_contents,file_names,dbml_filename,directory):
     master_desc = ""
     
     print("Inside VDD Creation Code")
-    functions, matches1 = identify_functions(file_names,file_contents)
+    functions, matches = identify_functions(file_names,file_contents)
     
-    matches = graph_order.new_order_for_processing(matches1)
+    # matches = graph_order.new_order_for_processing(matches1)
 
     matches = check_names(matches)
     print("First Round of Matches:\n",matches)
