@@ -12,4 +12,3 @@ pygraphviz
 pydot
 tiktoken
 pathlib
-shutil
