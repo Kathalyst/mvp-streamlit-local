@@ -9,6 +9,8 @@ from st_pages import Page, show_pages, hide_pages
 from streamlit_extras.switch_page_button import switch_page
 from footer import show_footer
 import subprocess
+import os
+import base64
 
 # st.set_page_config(
 #     page_title="Kathalyst Web App",
@@ -29,7 +31,7 @@ def vdd(file_contents,file_names):
                         file_name=fil_name,
                         mime="image/png"
                     )
-    except e:
+    except Exception as e:
         print(e)
         st.info("We are working hard on our artistic skills to develop the best possible diagram for you. We will get back to you very soon!")
 
@@ -126,8 +128,16 @@ if submit:
         st.stop()
     #process if submit button is pressed
     print(f'Processing {github_link}')
-    
-    file_contents,file_names,dir = github_process.control(github_link)
+
+    if 'github_link' not in st.session_state:
+        st.session_state['github_link'] = github_link
+    else:
+        st.session_state.github_link = github_link
+
+    file_contents,file_names,directory,repo_name = github_process.control(github_link)
+
+    st.session_state.repo_directory = directory
+    st.session_state.repo_name = repo_name
 
     git.write("Processing Github Repo: "+str(github_link))
     feedback.link_button("Give Us Feedback","https://forms.office.com/r/DmyrfUnxGt")
@@ -136,32 +146,39 @@ if submit:
     print(f"\n\n\nFile Names: {file_names}")
 
     with doc:
+        st.write("Done :)")
         # print("\n\nInside Documentation Tab")
-        with st.spinner(text="In progress..."):
-            if model == "Llama 2 70b":
-                output = llama2_process.control(file_contents,file_names)
-            # elif model == "GPT-4":
-            #     output = gpt4_process.control(file_contents,file_names,dir)
-        st.markdown(output)
-        st.download_button('Download Text File', output)
+        # with st.spinner(text="In progress..."):
+        #     if model == "Llama 2 70b":
+        #         output = llama2_process.control(file_contents,file_names)
+        #     # elif model == "GPT-4":
+        #     #     output = gpt4_process.control(file_contents,file_names,dir)
+        # st.markdown(output)
+        # st.download_button('Download Text File', output)
     
     with vdd:
         print("\n\nInside VDD Tab")
         try:
-            with st.spinner(text="In progress..."):
+            print("Trying VDD ...")
+            with st.spinner(text="In progress of VDD creation..."):
                         # fil_name = vdd.control(file_contents,file_names,"diagram")
                 # fil_name = vdd_diagram.process_control(file_contents,file_names,"diagram")
-                dbml_fil_name = vdd2.vdd_file_creation(file_contents,file_names,"diagram")
+                print("Inside spinner")
 
-                subprocess.run(["dbml-renderer", "-i", dbml_fil_name, "-o", "diagram.svg"])
-                st.image("diagram.svg")
-                with open("diagram.svg", "rb") as file:
-                    btn = st.download_button(
+                dbml_file = vdd2.vdd_file_creation(file_contents,file_names,st.session_state.repo_name,st.session_state.repo_directory)
+                print("DBML File: ",dbml_file)
+                vdd_path = os.path.join(st.session_state.repo_directory, st.session_state.repo_name + ".svg")
+
+                subprocess.run(["dbml-renderer", "-i", dbml_file, "-o", vdd_path])
+            st.image(vdd_path)
+            with open(vdd_path, "rb") as file:
+                btn = st.download_button(
                             label="Download image",
                             data=file,
-                            file_name=fil_name,
+                            file_name=st.session_state.repo_name + ".svg",
                             mime="image/svg+xml"
                         )
-        except:
+        except Exception as e:
+            print(e)
             st.info("We are working hard on our artistic skills to develop the best possible diagram for you. We will get back to you very soon!")
 

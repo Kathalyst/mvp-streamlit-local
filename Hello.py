@@ -98,6 +98,11 @@ def home():
 
                         st.session_state.logged_in = True
                         st.success("Login successful.")
+
+                        if 'username' not in st.session_state:
+                            st.session_state['username'] = username
+                        else:
+                            st.session_state['username'] = username
                         #st.snow()
                         switch_page("App")
                     else:
@@ -149,6 +154,11 @@ def home():
 
                         st.session_state.logged_in = True
                         st.success("Login successful.")
+
+                        if 'username' not in st.session_state:
+                            st.session_state['username'] = username
+                        else:
+                            st.session_state['username'] = username
                         #st.snow()
                         switch_page("App")
 

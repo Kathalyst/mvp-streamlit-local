@@ -11,3 +11,5 @@ streamlit-extras
 pygraphviz
 pydot
 tiktoken
+pathlib
+shutil

@@ -2,6 +2,7 @@ import llama2_process
 import github_process
 import json
 import graph_order
+import os
 
 prompt_system = """
 Identify all functions in the code given in the prompt. Categorize these functions into 2 categories, internal functions or functions defined in the given code, and external functions or functions that are being called from other code files and libraries.
@@ -162,7 +163,7 @@ def identify_functions(file_names,file_contents):
         results.append(matches)
     return functions,results
 
-def vdd_file_creation(file_contents,file_names,dbml_filename):
+def vdd_file_creation(file_contents,file_names,dbml_filename,directory):
     master_desc = ""
     
     print("Inside VDD Creation Code")
@@ -177,23 +178,28 @@ def vdd_file_creation(file_contents,file_names,dbml_filename):
     # print(create_tables("abcd.py",["func1","func2","func3"]))
     print("\nPrinting One By One\n")
     master_desc = create_DBML(matches)
+
+    file = os.path.join(directory,dbml_filename + ".dbml")
     
-    # write master_desc string to file vdd.dbml and Create vdd.dbml if file does not exist
-    with open(dbml_filename + ".dbml","w") as f:
+    # create file if not exists
+    if not os.path.exists(file):
+        open(file, 'w').close()
+    
+    with open(file,"w") as f:
+        print("Writing doc")
         f.write(master_desc)
 
-    ret = dbml_filename + ".dbml"
-    return ret
+    return file
 
 if __name__ == "__main__":
     
     github_link = "https://github.com/anushkasingh98/testing-repo2"
-    file_contents,file_names,dir = github_process.control(github_link)
+    file_contents,file_names,dir,name = github_process.control(github_link)
 
     print("File Names\n",file_names)
     print("Count of Num of Files: ",len(file_contents))
     
-    ret = vdd_file_creation(file_contents,file_names,"diagram_trial")
+    ret = vdd_file_creation(file_contents,file_names,name,os.getcwd())
 
     import subprocess
 
