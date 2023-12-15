@@ -18,7 +18,7 @@ from npm1 import install_npm
 #     page_icon="images/codeAID_green.png",
 # )
 
-install_npm()
+# install_npm()
 
 @st.cache_data
 def vdd(file_contents,file_names):
@@ -173,6 +173,8 @@ if submit:
                 dbml_file = vdd2.vdd_file_creation(file_contents,file_names,st.session_state.repo_name,st.session_state.repo_directory)
                 print("DBML File: ",dbml_file)
                 vdd_path = os.path.join(st.session_state.repo_directory, st.session_state.repo_name + ".svg")
+
+                install_npm()
 
                 subprocess.run(["dbml-renderer", "-i", dbml_file, "-o", vdd_path])
             st.image(vdd_path)
