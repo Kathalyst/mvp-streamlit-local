@@ -8,7 +8,12 @@ import subprocess
 
 def install_npm():
     # run command curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-    subprocess.run(["curl", "-o-", "https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh", "|", "bash"])
+    # subprocess.run(["curl", "-o-", "https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh"])
     # run command nvm install node
-    subprocess.run(["nvm", "install", "node"])
+    # subprocess.run(["nvm", "install", "node"])
+
     subprocess.run(["npm", "install", "-g", "@softwaretechnik/dbml-renderer"])
+    # create package.json file for installing npm package @softwaretechnik/dbml-renderer
+    # subprocess.run(["npm", "init", "-y"])
+    # subprocess.run(["npm", "install", "@softwaretechnik/dbml-renderer"])
+    # subprocess.run(["npm", "install", "-g", "@softwaretechnik/dbml-renderer"])
