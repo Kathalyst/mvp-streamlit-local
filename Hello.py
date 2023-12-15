@@ -44,7 +44,7 @@ def home():
         )
 
     TITLE = "Welcome to Kathalyst"
-    HEADER_LINE = "Effortlessly Generate Comprehensive<br>Software Documentation<br>from your Code Repository."
+    HEADER_LINE = "Effortlessly Generate Comprehensive<br>Software Documentation from your Code Repository."
     pretty_title(TITLE, HEADER_LINE)
 
     # custom_css = """
