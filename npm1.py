@@ -8,7 +8,7 @@ import subprocess
 
 def install_npm():
     # run command curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash
-    subprocess.run(["curl", "-o-", "https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash"])
+    # subprocess.run(["curl", "-o-", "https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh | bash"])
     # print(subprocess.getoutput('curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -'))
 
     # import os
@@ -21,9 +21,9 @@ def install_npm():
     # run command nvm install node
     # subprocess.run(["nvm", "install", "node"])
     # run command sudo apt-get update 
-    subprocess.run(['sudo','apt-get','update'])
-    subprocess.run(['sudo','apt-get','install','nodejs'])
-    subprocess.run(['sudo','apt-get','install','npm'])
+    # subprocess.run(['sudo','apt-get','update'])
+    # subprocess.run(['sudo','apt-get','install','nodejs'])
+    # subprocess.run(['sudo','apt-get','install','npm'])
     # sudo apt-get install nodejs 
     # sudo apt-get install npm 
 

@@ -18,7 +18,7 @@ from npm1 import install_npm
 #     page_icon="images/codeAID_green.png",
 # )
 
-# install_npm()
+install_npm()
 
 @st.cache_data
 def vdd(file_contents,file_names):
