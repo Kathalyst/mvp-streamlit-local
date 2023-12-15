@@ -18,7 +18,7 @@ from npm1 import install_npm
 #     page_icon="images/codeAID_green.png",
 # )
 
-# install_npm()
+install_npm()
 
 @st.cache_data
 def vdd(file_contents,file_names):
@@ -185,5 +185,6 @@ if submit:
                         )
         except Exception as e:
             print(e)
+            st.error(e)
             st.info("We are working hard on our artistic skills to develop the best possible diagram for you. We will get back to you very soon!")
 
