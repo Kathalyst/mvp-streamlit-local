@@ -11,11 +11,15 @@ from footer import show_footer
 import subprocess
 import os
 import base64
+from npm1 import install_npm
 
 # st.set_page_config(
 #     page_title="Kathalyst Web App",
 #     page_icon="images/codeAID_green.png",
 # )
+
+
+install_npm()
 
 @st.cache_data
 def vdd(file_contents,file_names):
@@ -146,17 +150,19 @@ if submit:
     print(f"\n\n\nFile Names: {file_names}")
 
     with doc:
-        st.write("Done :)")
-        # print("\n\nInside Documentation Tab")
-        # with st.spinner(text="In progress..."):
-        #     if model == "Llama 2 70b":
-        #         output = llama2_process.control(file_contents,file_names)
-        #     # elif model == "GPT-4":
-        #     #     output = gpt4_process.control(file_contents,file_names,dir)
-        # st.markdown(output)
-        # st.download_button('Download Text File', output)
+        # st.write("Done :)")
+        print("\n\nInside Documentation Tab")
+        with st.spinner(text="In progress..."):
+            if model == "Llama 2 70b":
+                output = llama2_process.control(file_contents,file_names)
+            # elif model == "GPT-4":
+            #     output = gpt4_process.control(file_contents,file_names,dir)
+        st.markdown(output)
+        st.download_button('Download Text File', output)
     
     with vdd:
+        # run command npm install -g @softwaretechnik/dbml-renderer in python
+
         print("\n\nInside VDD Tab")
         try:
             print("Trying VDD ...")
