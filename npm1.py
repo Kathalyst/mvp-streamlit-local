@@ -26,8 +26,11 @@ def install_npm():
     # subprocess.run(['sudo','apt-get','install','npm'])
     # sudo apt-get install nodejs 
     # sudo apt-get install npm 
-
-    subprocess.run(["npm", "install", "-g", "@softwaretechnik/dbml-renderer"])
+    try:
+        print("Testing installation of npm package")
+        subprocess.run(["sudo","npm", "install", "-g", "@softwaretechnik/dbml-renderer"])
+    except Exception as e:
+        print("Exception: ",e)
 
 if __name__ == "__main__":
     install_npm()
