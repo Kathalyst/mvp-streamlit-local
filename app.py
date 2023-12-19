@@ -182,7 +182,7 @@ if submit:
     print(f"\n\n\nFile Names: {file_names}")
 
     with doc:
-        # st.write("Done :)")
+        st.write("Done :)")
         print("\n\nInside Documentation Tab")
         # with st.spinner(text="In progress..."):
         #     if model == "Llama 2 70b":
