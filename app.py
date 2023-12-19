@@ -182,15 +182,15 @@ if submit:
     print(f"\n\n\nFile Names: {file_names}")
 
     with doc:
-        st.write("Done :)")
+        # st.write("Done :)")
         print("\n\nInside Documentation Tab")
-        # with st.spinner(text="In progress..."):
-        #     if model == "Llama 2 70b":
-        #         output = llama2_process.control(file_contents,file_names)
-        #     # elif model == "GPT-4":
-        #     #     output = gpt4_process.control(file_contents,file_names,dir)
-        # st.markdown(output)
-        # st.download_button('Download Text File', output)
+        with st.spinner(text="In progress..."):
+            if model == "Llama 2 70b":
+                output = llama2_process.control(file_contents,file_names)
+            # elif model == "GPT-4":
+            #     output = gpt4_process.control(file_contents,file_names,dir)
+        st.markdown(output)
+        st.download_button('Download Text File', output)
     
     with vdd:
         # run command npm install -g @softwaretechnik/dbml-renderer in python
