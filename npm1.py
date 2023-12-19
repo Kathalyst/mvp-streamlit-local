@@ -28,7 +28,7 @@ def install_npm():
     # sudo apt-get install npm 
     try:
         print("Testing installation of npm package")
-        subprocess.run(["npm", "install", "-g", "@softwaretechnik/dbml-renderer"])
+        # subprocess.run(["npm", "install", "-g", "@softwaretechnik/dbml-renderer"])
     except Exception as e:
         print("Exception: ",e)
 

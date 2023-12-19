@@ -46,6 +46,11 @@ show_pages([
         Page("app.py","App")
     ])
 
+
+if 'username' not in st.session_state:
+    hide_pages(['App'])
+    switch_page("Home")
+
 hide_pages(['Home'])
 
 # placeholder = st.empty()
