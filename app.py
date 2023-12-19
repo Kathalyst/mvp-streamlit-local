@@ -12,6 +12,9 @@ import subprocess
 import os
 import base64
 from npm1 import install_npm
+import psycopg2
+from datetime import datetime
+
 
 # st.set_page_config(
 #     page_title="Kathalyst Web App",
@@ -99,11 +102,13 @@ Github Link:
 (Note: Please make your repository public before using the tool.)
 """)
 
+
 model = st.sidebar.radio("Which LLM Model would you like to use?",["Llama 2 70b"],index=0)
 # model = st.sidebar.radio("Which LLM Model would you like to use?",["GPT-4","Llama 2 70b"],index=0)
 
 submit = st.sidebar.button("Submit")
-
+#st.write(st.session_state.username)
+user_name = st.session_state.username
 example_links = ["https://github.com/anushkasingh98/testing-repo2","https://github.com/Kathalyst/TaskManager"]
 # ["https://github.com/anushkasingh98/personal-portfolio","https://github.com/anushkasingh98/demo-repo","https://github.com/anushkasingh98/CapitalisationProject"]
 df = pd.DataFrame(example_links,columns=["Example Github Links"])
@@ -124,13 +129,15 @@ if st.sidebar.button("Log Out"):
 
 show_footer()
 
-if submit:
+
+if submit:   
 
     if github_link == "":
         st.warning("Github Link not entered. Please Input a valid link.")
         st.stop()
     #process if submit button is pressed
     print(f'Processing {github_link}')
+ 
 
     if 'github_link' not in st.session_state:
         st.session_state['github_link'] = github_link
@@ -141,6 +148,27 @@ if submit:
 
     st.session_state.repo_directory = directory
     st.session_state.repo_name = repo_name
+
+    conn = psycopg2.connect(
+        host="kserver-mvp.postgres.database.azure.com",
+        database="postgres",
+        user="dev_mvp",
+        password="katha@0b0bc56"
+    )
+    cur = conn.cursor()
+
+    #us_nm = st.session_state.username
+
+    try:
+        # Prepare and execute the SQL query
+        cur.execute("INSERT INTO mvp.repositories ( username, repository_name, repository_link, created_at) VALUES (%s, %s, %s, %s)", ( user_name, repo_name, github_link, datetime.now()))
+        conn.commit()
+        #st.success("Successfully saved your GitHub repository.")
+    except psycopg2.Error as e:
+        #st.error(f"Error saving repository: {e}")
+        conn.rollback()
+    finally:
+            conn.close() 
 
     git.write("Processing Github Repo: "+str(github_link))
     feedback.link_button("Give Us Feedback","https://forms.office.com/r/DmyrfUnxGt")
