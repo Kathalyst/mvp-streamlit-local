@@ -2,4 +2,4 @@ graphviz
 graphviz-dev
 nodejs
 npm
-npm install @softwaretechnik/dbml-renderer
+@softwaretechnik/dbml-renderer
